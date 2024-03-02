@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class UserAreaConfig(AppConfig):
-    name = 'users'
+    name = 'userarea'
     verbose_name = 'User Area Management'

@@ -42,10 +42,10 @@ INSTALLED_APPS = [
 
     # apps
     'content',
-    'directs',
+    'directmessaging',
     'logs',
-    'activity_user',
-    'users',
+    'useractivities',
+    'userarea',
 
 ]
 

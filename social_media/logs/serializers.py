@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import ContentLog, ProfileLog
-from ..content.serializers import PostSerializer
+from content.serializers import PostSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):

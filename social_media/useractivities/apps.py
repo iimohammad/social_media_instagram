@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class UserActivitiesConfig(AppConfig):
-    name = 'activity_user'
+    name = 'useractivities'
     verbose_name = 'User Activities Management'
