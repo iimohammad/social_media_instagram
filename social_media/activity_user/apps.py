@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ActivityUserConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
+class UserActivitiesConfig(AppConfig):
     name = 'activity_user'
+    verbose_name = 'User Activities Management'

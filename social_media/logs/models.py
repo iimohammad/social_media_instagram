@@ -1,15 +1,22 @@
-# logs/models.py
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
-from social_media.content.models import Post, Story
-
-User = get_user_model()
+from social_media.content.models import Post
 
 
-class ActivityLog(models.Model):
+class ContentLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    activity_type = models.CharField(max_length=100)
-    content = models.ForeignKey(Post, null=True, blank=True, on_delete=models.CASCADE)
-    story = models.ForeignKey(Story, null=True, blank=True, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Content Log for {self.user.username} on Post {self.post.id}"
+
+
+class ProfileLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile_logs')
+    viewed_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='viewed_profile_logs')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Profile Log for {self.user.username} viewing {self.viewed_profile.username}'s profile"

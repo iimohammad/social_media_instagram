@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class UsersConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
+class UserAreaConfig(AppConfig):
     name = 'users'
+    verbose_name = 'User Area Management'
