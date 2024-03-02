@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from social_media.content.models import Post
+from content.models import Post
 
 
 class ContentLog(models.Model):

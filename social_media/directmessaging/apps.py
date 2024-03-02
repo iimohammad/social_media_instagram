@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class DirectMessagingConfig(AppConfig):
-    name = 'directs'
+    name = 'directmessaging'
     verbose_name = 'Direct Messaging Management'
