@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class DirectsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
+class DirectMessagingConfig(AppConfig):
     name = 'directs'
+    verbose_name = 'Direct Messaging Management'
