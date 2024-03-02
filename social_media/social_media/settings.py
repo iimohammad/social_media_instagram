@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'content',
     'directs',
     'logs',
-    'activity_user'
+    'activity_user',
+    'users',
 
 ]
 
