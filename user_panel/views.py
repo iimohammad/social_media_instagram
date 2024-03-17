@@ -8,11 +8,9 @@ from rest_framework import status
 from rest_framework import viewsets, filters, generics
 from rest_framework import permissions
 from rest_framework.mixins import DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin, ListModelMixin
-# from logger.models import ProfileView
 from .models import Follow, CustomUser, Profile
 from .serializers import *
 
-# Follow Viewset
 class FollowViewSet(viewsets.ModelViewSet):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -95,16 +93,4 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
         profile = self.get_object()
-        # Trigger the profile view signal
-        post_save.send(sender=Profile, instance=profile,
-                       created=False, request=request)
-        return response
 
-
-# Signal for Logging Profile Views
-# @receiver(post_save, sender=Profile)
-# def log_profile_view(sender, instance, created, **kwargs):
-#     if not created:
-#         request = kwargs.get('request')
-#         if hasattr(request, 'user'):
-#             ProfileView.objects.create(profile=instance, viewer=request.user)

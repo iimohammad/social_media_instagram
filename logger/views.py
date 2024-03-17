@@ -1,3 +1,8 @@
-from django.shortcuts import render
+# logger/views.py
+from rest_framework import viewsets
+from .models import ViewLog
+from .serializers import ViewLogSerializer
 
-# Create your views here.
+class ViewLogViewSet(viewsets.ModelViewSet):
+    queryset = ViewLog.objects.all()
+    serializer_class = ViewLogSerializer

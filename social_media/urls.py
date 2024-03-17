@@ -11,7 +11,7 @@ urlpatterns = [
     path('user_panel/',include('user_panel.urls'),name='user-panel-url'),
     path('',include('user_panel.urls')),
     path('user_activity/', include('user_activity.urls')),
-    # path('api/logger/', include('logger.urls')),
+    path('logger/', include('logger.urls')),
     path('direct_message/', include('message.urls')),
     #
 
