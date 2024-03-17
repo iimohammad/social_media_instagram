@@ -37,15 +37,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Installed
+
+    # Trusted Apps
     'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
+    'rest_framework_simplejwt',
 
     # apps
-    'content',
-    'directmessaging',
-    'logs',
-    'useractivities',
-    'userarea',
+    'home',
+    # 'content',
+    # 'direct_message',
+    # 'logger',
+    # 'user_activity',
+    'user_panel',
 
 ]
 
@@ -80,22 +85,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'social_media.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': local_settings.DATABASE['name'],
-        'HOST': local_settings.DATABASE['host'],
-        'USER': local_settings.DATABASE['user'],
-        'PASSWORD': local_settings.DATABASE['password'],
-        'PORT': local_settings.DATABASE['port'],
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -134,12 +127,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'user_panel.CustomUser'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+        'rest_framework.authentication.SessionAuthentication')
 }
+
+LOGIN_URL = '/api-auth/login/'
+LOGIN_REDIRECT_URL = 'user_panel/profile/'
