@@ -126,6 +126,7 @@ env/
 venv/
 ENV/
 env.bak/
+venv_social_media/
 venv.bak/
 
 # Spyder project settings
