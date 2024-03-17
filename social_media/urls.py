@@ -12,7 +12,7 @@ urlpatterns = [
     path('',include('user_panel.urls')),
     path('user_activity/', include('user_activity.urls')),
     # path('api/logger/', include('logger.urls')),
-    # path('api/direct_message/', include('direct_message.urls')),
+    path('direct_message/', include('message.urls')),
     #
 
 # SimpleJWT URLs

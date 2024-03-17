@@ -2,7 +2,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 from .models import TestMessage, ImageMessage, AudioMessage
 from .serializers import TestMessageSerializer, ImageMessageSerializer, AudioMessageSerializer
 
@@ -40,14 +40,14 @@ class ReceiveMessageAPIView(APIView):
             'audio_messages': audio_serializer.data
         }, status=status.HTTP_200_OK)
 
-class TestMessageList(generics.ListAPIView):
+class TestMessageViewSet(ModelViewSet):
     queryset = TestMessage.objects.all()
     serializer_class = TestMessageSerializer
 
-class ImageMessageList(generics.ListAPIView):
+class ImageMessageViewSet(ModelViewSet):
     queryset = ImageMessage.objects.all()
     serializer_class = ImageMessageSerializer
 
-class AudioMessageList(generics.ListAPIView):
+class AudioMessageViewSet(ModelViewSet):
     queryset = AudioMessage.objects.all()
     serializer_class = AudioMessageSerializer

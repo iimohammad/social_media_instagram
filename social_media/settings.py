@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     # apps
     'home',
     'content',
-    # 'direct_message',
+    'message',
     # 'logger',
     'user_activity',
     'user_panel',
