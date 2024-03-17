@@ -7,7 +7,7 @@ from home.views import home
 urlpatterns = [
     path(ADMIN, admin.site.urls),
     path('', home),
-    # path('api/content/', include('content.urls')),
+    path('content/', include('content.urls')),
     path('user_panel/',include('user_panel.urls'),name='user-panel-url'),
     path('',include('user_panel.urls')),
     # path('api/user_activity/', include('user_activity.urls')),

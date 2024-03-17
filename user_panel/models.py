@@ -22,6 +22,7 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Profile of {self.user.username}"
+    
 class Follow(models.Model):
     follower = models.ForeignKey(
         CustomUser, 

@@ -1,13 +1,11 @@
 from django.db import models
 from django.conf import settings
 
-
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract = True
-
 
 class Post(BaseModel):
     caption = models.CharField(max_length=255)
@@ -21,6 +19,14 @@ class Post(BaseModel):
     def __str__(self):
         return self.caption
 
+class Content(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='content_objects')
+
+    def delete(self):
+        super().delete()
+
+    def __str__(self):
+        return f"Content for post: {self.post.caption}"
 
 class Story(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
@@ -30,19 +36,6 @@ class Story(BaseModel):
 
     def __str__(self):
         return str(self.id)
-
-
-class Content(BaseModel):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='content_objects')
-
-    class Meta:
-        abstract = True
-
-    def delete(self):
-        storage, path = self.image.storage, self.image.path
-        storage.delete(path)
-        super().delete()
-
 
 class Mention(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='mentions')
@@ -54,7 +47,6 @@ class Mention(models.Model):
     def __str__(self):
         return str(self.id)
 
-
 class Hashtag(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='hashtags')
     title = models.CharField(max_length=255)
@@ -64,7 +56,6 @@ class Hashtag(models.Model):
 
     def __str__(self):
         return self.title
-
 
 class ContentImage(models.Model):
     content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name='images')
