@@ -10,7 +10,7 @@ urlpatterns = [
     path('content/', include('content.urls')),
     path('user_panel/',include('user_panel.urls'),name='user-panel-url'),
     path('',include('user_panel.urls')),
-    # path('api/user_activity/', include('user_activity.urls')),
+    path('user_activity/', include('user_activity.urls')),
     # path('api/logger/', include('logger.urls')),
     # path('api/direct_message/', include('direct_message.urls')),
     #

@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'content',
     # 'direct_message',
     # 'logger',
-    # 'user_activity',
+    'user_activity',
     'user_panel',
 
 ]
