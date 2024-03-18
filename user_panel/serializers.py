@@ -36,16 +36,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         return CustomUser.objects.create_user(**validated_data)
 
 
-
-
-
-from rest_framework import serializers
-from .models import Follow, CustomUser, Profile
-
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_public']
+
 
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
@@ -57,6 +52,7 @@ class PublicProfilesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('id', 'user', 'bio', 'profile_picture')
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:

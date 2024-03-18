@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from .models import TestMessage, ImageMessage, AudioMessage
+from .models import TextMessage, ImageMessage, AudioMessage
 from .serializers import TestMessageSerializer, ImageMessageSerializer, AudioMessageSerializer
 
 class SendMessageAPIView(APIView):
@@ -26,7 +26,7 @@ class SendMessageAPIView(APIView):
 
 class ReceiveMessageAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        test_messages = TestMessage.objects.filter(receiver=request.user)
+        test_messages = TextMessage.objects.filter(receiver=request.user)
         image_messages = ImageMessage.objects.filter(receiver=request.user)
         audio_messages = AudioMessage.objects.filter(receiver=request.user)
 
@@ -41,7 +41,7 @@ class ReceiveMessageAPIView(APIView):
         }, status=status.HTTP_200_OK)
 
 class TestMessageViewSet(ModelViewSet):
-    queryset = TestMessage.objects.all()
+    queryset = TextMessage.objects.all()
     serializer_class = TestMessageSerializer
 
 class ImageMessageViewSet(ModelViewSet):

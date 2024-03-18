@@ -8,14 +8,14 @@ urlpatterns = [
     path(ADMIN, admin.site.urls),
     path('', home),
     path('content/', include('content.urls')),
-    path('user_panel/',include('user_panel.urls'),name='user-panel-url'),
-    path('',include('user_panel.urls')),
+    path('user_panel/', include('user_panel.urls'), name='user-panel-url'),
+    path('', include('user_panel.urls')),
     path('user_activity/', include('user_activity.urls')),
     path('logger/', include('logger.urls')),
     path('direct_message/', include('message.urls')),
     #
 
-# SimpleJWT URLs
+    # SimpleJWT URLs
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),

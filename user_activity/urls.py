@@ -5,7 +5,6 @@ from .views import CommentViewSet, PostLikeViewSet, StoryLikeViewSet
 # Create a router object
 router = DefaultRouter()
 
-# Register the viewsets with the router
 router.register(r'comments', CommentViewSet, basename='comment')
 router.register(r'post-likes', PostLikeViewSet, basename='post-like')
 router.register(r'story-likes', StoryLikeViewSet, basename='story-like')

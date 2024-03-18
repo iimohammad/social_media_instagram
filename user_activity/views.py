@@ -4,6 +4,8 @@ from .serializers import CommentSerializer
 from rest_framework.views import APIView
 from .models import Comment, PostLike, StoryLike
 from content.models import *
+
+
 class CommentViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
@@ -11,6 +13,7 @@ class CommentViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class PostLikeViewSet(viewsets.ViewSet):
     def create(self, request, post_id, *args, **kwargs):
@@ -41,6 +44,7 @@ class PostLikeViewSet(viewsets.ViewSet):
                 return Response({"error": "User has not liked the post"}, status=status.HTTP_400_BAD_REQUEST)
         except Post.DoesNotExist:
             return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class StoryLikeViewSet(viewsets.ViewSet):
     def create(self, request, story_image_id, *args, **kwargs):

@@ -162,6 +162,7 @@ cython_debug/
 message_photoes/
 message_audio/
 profile_photos/
+message_photos/
 banners/
 episode_audio/
 db.sqlite3/

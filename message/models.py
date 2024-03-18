@@ -10,12 +10,14 @@ class Message(models.Model):
     def __str__(self):
         return str(self.id)
 
-class TestMessage(Message):
+
+class TextMessage(Message):
     test = models.TextField()
 
+
 class ImageMessage(Message):
-    image = models.ImageField(upload_to='message_photoes/',blank=False)
+    image = models.ImageField(upload_to='message_photos/', blank=False)
+
 
 class AudioMessage(Message):
-    audio_file = models.FileField(upload_to='message_audio/',blank=False)
-    
+    audio_file = models.FileField(upload_to='message_audio/', blank=False)

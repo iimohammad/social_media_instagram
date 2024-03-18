@@ -27,7 +27,7 @@ class BaseStoryRelatedViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(BasePostRelatedViewSet):
     serializer_class = PostSerializer
-    filterset_fields = ('user',)
+    filter_fields = ('user',)
     search_fields = ('caption',)
 
     def get_queryset(self):
@@ -62,7 +62,7 @@ class StoryViewSet(BaseStoryRelatedViewSet):
 
 class MentionViewSet(BasePostRelatedViewSet):
     serializer_class = MentionSerializer
-    filterset_fields = ('post', 'user')
+    filter_fields = ('post', 'user')
 
     def get_queryset(self):
         return Mention.objects.filter(post__user=self.request.user).order_by('-pk')
@@ -70,7 +70,7 @@ class MentionViewSet(BasePostRelatedViewSet):
 
 class HashtagViewSet(BasePostRelatedViewSet):
     serializer_class = HashtagSerializer
-    filterset_fields = ('post', 'title')
+    filter_fields = ('post', 'title')
 
     def get_queryset(self):
         return Hashtag.objects.filter(post__user=self.request.user).order_by('-pk')
@@ -80,7 +80,7 @@ class FollowingPostViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter,)
-    filterset_fields = ('user',)
+    filter_fields = ('user',)
     search_fields = ('caption',)
 
     def get_queryset(self):
@@ -93,7 +93,7 @@ class FollowingStoryViewSet(BaseStoryRelatedViewSet):
     serializer_class = StorySerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter,)
-    filterset_fields = ('user',)
+    filter_fields = ('user',)
 
     def get_queryset(self):
         user = self.request.user

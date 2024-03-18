@@ -11,11 +11,12 @@ from rest_framework.mixins import DestroyModelMixin, RetrieveModelMixin, UpdateM
 from .models import Follow, CustomUser, Profile
 from .serializers import *
 
+
 class FollowViewSet(viewsets.ModelViewSet):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter,)
-    filterset_fields = ('follower', 'following')
+    filter_fields = ('follower', 'following')
 
     def get_queryset(self):
         return Follow.objects.filter(follower=self.request.user.id).order_by('-pk')
@@ -30,13 +31,12 @@ class FollowViewSet(viewsets.ModelViewSet):
         serializer.save(follower=self.request.user)
 
 
-# User Account Viewset
 class UserAccountViewSet(ListModelMixin, RetrieveModelMixin, UpdateModelMixin,
                          DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = UserAccountSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter,)
-    filterset_fields = ('username',)
+    filter_fields = ('username',)
 
     def get_queryset(self):
         return CustomUser.objects.filter(id=self.request.user.id)
@@ -46,7 +46,7 @@ class UserAccountViewSet(ListModelMixin, RetrieveModelMixin, UpdateModelMixin,
 class RegisterApi(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
-    def post(self, request, *args,  **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -57,7 +57,6 @@ class RegisterApi(generics.GenericAPIView):
         return Response({"user": UserAccountSerializer(user, context=self.get_serializer_context()).data})
 
 
-# Public Profiles Viewset
 class PublicProfilesViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PublicProfilesSerializer
@@ -67,13 +66,11 @@ class PublicProfilesViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
-
-# Following Profiles Viewset
 class FollowingProfilesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PublicProfilesSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter,)
-    filterset_fields = ('user',)
+    filter_fields = ('user',)
 
     def get_queryset(self):
         users = self.request.user.following.all()
@@ -82,7 +79,6 @@ class FollowingProfilesViewSet(viewsets.ReadOnlyModelViewSet):
         return following_profiles
 
 
-# Profile Viewset
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -93,4 +89,3 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
         profile = self.get_object()
-

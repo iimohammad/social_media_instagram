@@ -8,10 +8,8 @@ from .views import (
     PublicProfilesViewSet, FollowingProfilesViewSet, ProfileViewSet
 )
 
-# Create a router
 router = routers.DefaultRouter()
 
-# Register your viewsets with the router
 router.register(r'follows', FollowViewSet, basename='follow')
 router.register(r'user-accounts', UserAccountViewSet, basename='user-account')
 router.register(r'profiles', ProfileViewSet, basename='profile')

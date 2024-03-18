@@ -22,16 +22,17 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Profile of {self.user.username}"
-    
+
+
 class Follow(models.Model):
     follower = models.ForeignKey(
-        CustomUser, 
-        related_name='following_set', 
+        CustomUser,
+        related_name='following_set',
         on_delete=models.CASCADE
     )
     following = models.ForeignKey(
-        CustomUser, 
-        related_name='followers_set', 
+        CustomUser,
+        related_name='followers_set',
         on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
@@ -43,4 +44,3 @@ class Follow(models.Model):
 
     def __str__(self):
         return f"{self.follower} follows {self.following}"
-

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from user_panel.models import CustomUser
-from .models import TestMessage, ImageMessage, AudioMessage
+from .models import TextMessage, ImageMessage, AudioMessage
 
 class sender_receiver_serializer(serializers.Serializer):
     class Meta:
@@ -13,7 +13,7 @@ class TestMessageSerializer(serializers.ModelSerializer):
     sender_info = sender_receiver_serializer(source='sender', read_only=True)
 
     class Meta:
-        model = TestMessage
+        model = TextMessage
         fields = ('id', 'sender', 'sender_info', 'test', 'created_at')
 
     def get_fields(self):

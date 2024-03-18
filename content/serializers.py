@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Post, Content, Story, Mention, Hashtag, ContentImage
 
+
 class ContentImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentImage
