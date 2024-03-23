@@ -33,7 +33,7 @@ class PostContent(models.Model):
     post = models.ForeignKey(
         Post, related_name='content', on_delete=models.CASCADE)
     typeContent = models.CharField(max_length=10, choices=POST_CONTENT_CHOICES)
-    file = models.FileField(upload_to='post_content/')
+    file = models.FileField(upload_to='post_content/',null=True)
 
     def delete(self):
         storage, path = self.file.storage, self.file.path

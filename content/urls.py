@@ -1,15 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    AddContentToPost, FollowingStoryViewSet, MentionViewSet, MyPostViewSet, FollowingPostViewSet, MyStoryViewSet
+    CreatePostAPIView, FollowingStoryViewSet, MentionViewSet, MyPostViewSet, FollowingPostViewSet, MyStoryViewSet,
+
 )
 
 
 router = DefaultRouter()
 # Show User Posts
 router.register(r'myposts', MyPostViewSet, basename='myposts')
-# Show Content of posts
-router.register(r'MyPostContent', AddContentToPost, basename='mypostContents')
 # Show Following Posts and Can Like or Dislike
 router.register(r'Following/Posts', FollowingPostViewSet,
                 basename='FollowingPosts')
@@ -23,4 +22,5 @@ router.register(r'mentions', MentionViewSet, basename='mentions')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('create_post/', CreatePostAPIView.as_view(), name='create_post'),
 ]

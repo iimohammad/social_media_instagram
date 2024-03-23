@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from user_panel.models import Follow
 from .models import Post, Reaction, Story, Mention
 from .serializers import *
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
@@ -16,24 +16,19 @@ class MyPostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Post.objects.filter(user=self.request.user)
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.user != request.user:
+            return Response(
+                {"error": "You don't have permission to update this post."}, status=status.HTTP_403_FORBIDDEN)
 
+        content_data = request.data.pop('content', None)
+        if content_data:
+            instance.content.all().delete()
+            for content_item in content_data:
+                PostContent.objects.create(post=instance, **content_item)
+        return super().update(request, *args, **kwargs)
 
-
-class AddContentToPost(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = PostContentSerializer
-    def get_queryset(self):
-        # Retrieve the posts belonging to the request user
-        posts = Post.objects.filter(user=self.request.user)
-        # Get the associated post content objects
-        post_content = PostContent.objects.filter(post__in=posts)
-        return post_content
-
-    def get_serializer_context(self):
-        # Include the request object in the serializer context
-        context = super().get_serializer_context()
-        context.update({'request': self.request})
-        return context
 
 class FollowingPostViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
@@ -135,3 +130,12 @@ class MentionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Mention.objects.filter(
             post__user=self.request.user).order_by('-pk')
+    
+
+class CreatePostAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = PostSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
