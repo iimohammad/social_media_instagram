@@ -1,28 +1,62 @@
 from rest_framework import serializers
-from .models import Post, Content, Story, Mention, Hashtag, ContentImage
+from .models import Post, Story, Mention 
 
 
-class ContentImageSerializer(serializers.ModelSerializer):
+# My Posts
+from rest_framework import serializers
+from .models import Post, Hashtag, PostContent
+
+class HashtagSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ContentImage
-        fields = ['id', 'image']
+        model = Hashtag
+        fields = '__all__'
 
-
-class ContentSerializer(serializers.ModelSerializer):
-    images = ContentImageSerializer(many=True, read_only=True)
-
+class PostContentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Content
-        fields = ['id', 'images']
-
+        model = PostContent
+        fields = ('typeContent', 'file')
 
 class PostSerializer(serializers.ModelSerializer):
-    content_objects = ContentSerializer(many=True, read_only=True)
+    hashtags = HashtagSerializer(many=True, read_only=True)
+    content = PostContentSerializer(many=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'caption', 'user', 'content_objects']
+        fields = ('id', 'caption', 'user', 'hashtags', 'content')
 
+    def create(self, validated_data):
+        content_data = validated_data.pop('content')
+        hashtags_data = validated_data.pop('hashtags')
+        post = Post.objects.create(**validated_data)
+        for content_item in content_data:
+            PostContent.objects.create(post=post, **content_item)
+        post.hashtags.set(hashtags_data)
+        return post
+
+
+class FollowingPostSerializer(serializers.ModelSerializer):
+    hashtags = HashtagSerializer(many=True, read_only=True)
+    content = PostContentSerializer(many=True)
+    like_count = serializers.SerializerMethodField()
+    dislike_count = serializers.SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = ('id', 'caption', 'user', 'hashtags', 'content','like_count', 'dislike_count')
+
+    def get_like_count(self, obj):
+        return obj.like_count()
+
+    def get_dislike_count(self, obj):
+        return obj.dislike_count()
+
+    def create(self, validated_data):
+        content_data = validated_data.pop('content')
+        hashtags_data = validated_data.pop('hashtags')
+        post = Post.objects.create(**validated_data)
+        for content_item in content_data:
+            PostContent.objects.create(post=post, **content_item)
+        post.hashtags.set(hashtags_data)
+        return post
 
 class StorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,7 +70,3 @@ class MentionSerializer(serializers.ModelSerializer):
         fields = ['id', 'post', 'user']
 
 
-class HashtagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Hashtag
-        fields = ['id', 'post', 'title']

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from . import local_settings
@@ -68,10 +69,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'social_media.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'content', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
