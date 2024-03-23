@@ -1,13 +1,15 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    FollowingStoryViewSet, MentionViewSet, MyPostViewSet, FollowingPostViewSet, MyStoryViewSet
+    AddContentToPost, FollowingStoryViewSet, MentionViewSet, MyPostViewSet, FollowingPostViewSet, MyStoryViewSet
 )
 
 
 router = DefaultRouter()
 # Show User Posts
 router.register(r'myposts', MyPostViewSet, basename='myposts')
+# Show Content of posts
+router.register(r'MyPostContent', AddContentToPost, basename='mypostContents')
 # Show Following Posts and Can Like or Dislike
 router.register(r'Following/Posts', FollowingPostViewSet,
                 basename='FollowingPosts')
