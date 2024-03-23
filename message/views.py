@@ -2,58 +2,25 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
-from .models import TextMessage, ImageMessage, AudioMessage
-from .serializers import TestMessageSerializer, ImageMessageSerializer, AudioMessageSerializer
+from rest_framework import viewsets
+from rest_framework import permissions
+from user_panel.models import Follow
+from user_panel.models import CustomUser
+from .models import Message
+from .serializers import MessageReceiveSerializers, MessageSendSerializers
 
 
-class SendMessageAPIView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = None
-        message_type = request.data.get('type')
+class ShowMyRecieveMessageViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = MessageReceiveSerializers
 
-        if message_type == 'test':
-            serializer = TestMessageSerializer(data=request.data)
-        elif message_type == 'image':
-            serializer = ImageMessageSerializer(data=request.data)
-        elif message_type == 'audio':
-            serializer = AudioMessageSerializer(data=request.data)
-
-        if serializer is not None and serializer.is_valid():
-            serializer.save(sender=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        return Message.objects.filter(receiver=self.request.user)
 
 
-class ReceiveMessageAPIView(APIView):
-    def get(self, request, *args, **kwargs):
-        test_messages = TextMessage.objects.filter(receiver=request.user)
-        image_messages = ImageMessage.objects.filter(receiver=request.user)
-        audio_messages = AudioMessage.objects.filter(receiver=request.user)
+class SendMessageViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = MessageSendSerializers
 
-        test_serializer = TestMessageSerializer(test_messages, many=True)
-        image_serializer = ImageMessageSerializer(image_messages, many=True)
-        audio_serializer = AudioMessageSerializer(audio_messages, many=True)
-
-        return Response({
-            'test_messages': test_serializer.data,
-            'image_messages': image_serializer.data,
-            'audio_messages': audio_serializer.data
-        }, status=status.HTTP_200_OK)
-
-
-class TestMessageViewSet(ModelViewSet):
-    queryset = TextMessage.objects.all()
-    serializer_class = TestMessageSerializer
-
-
-class ImageMessageViewSet(ModelViewSet):
-    queryset = ImageMessage.objects.all()
-    serializer_class = ImageMessageSerializer
-
-
-class AudioMessageViewSet(ModelViewSet):
-    queryset = AudioMessage.objects.all()
-    serializer_class = AudioMessageSerializer
+    def get_queryset(self):
+        return Message.objects.filter(sender=self.request.user)
