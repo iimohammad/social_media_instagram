@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'rest_framework_simplejwt',
+    'import_export',
 
     # apps
     'home',
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'logger',
     'user_activity',
     'user_panel',
+    
 
 ]
 

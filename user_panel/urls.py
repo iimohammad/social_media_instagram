@@ -4,17 +4,22 @@ from rest_framework import routers
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    FollowViewSet, UserAccountViewSet, RegisterApi,
-    PublicProfilesViewSet, FollowingProfilesViewSet, ProfileViewSet
+    UserAccountViewSet, RegisterApi,
+    PublicProfilesViewSet, FollowingProfilesViewSet, ProfileViewSet,FollowingViewSet,FollowerViewSet
 )
 
 router = routers.DefaultRouter()
-
-router.register(r'follows', FollowViewSet, basename='follow')
-router.register(r'user-accounts', UserAccountViewSet, basename='user-account')
-router.register(r'profiles', ProfileViewSet, basename='profile')
+# Edit Profile
+router.register(r'EditProfile', ProfileViewSet, basename='EditProfile')
+# Public Profile
 router.register(r'public-profiles', PublicProfilesViewSet, basename='public-profile')
+# Show following and can add or remove
+router.register('followings', FollowingViewSet,basename='followings')
+# Show followers and can Delete
+router.register('followers', FollowerViewSet,basename='followers')
+
 router.register(r'following-profiles', FollowingProfilesViewSet, basename='following-profile')
+
 
 
 # Define additional paths if needed

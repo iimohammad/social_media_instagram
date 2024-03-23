@@ -39,22 +39,75 @@ class RegisterSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_public']
+        fields = ['id', 'first_name', 'last_name','phone_number']
+
+
+
+
+class FollowingSerializer(serializers.ModelSerializer):
+    following_username = serializers.ReadOnlyField(source='following.username')
+    class Meta:
+        model = Follow
+        fields = ['id','follower' ,'following', 'following_username', 'created_at']
+        read_only_fields = ['follower']
+class FollowerSerializer(serializers.ModelSerializer):
+    follower_username = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Follow
+        fields = ['id', 'follower', 'follower_username', 'created_at']
+        read_only_fields = ['follower']
+
+    def get_follower_username(self, instance):
+        return instance.follower.username
+
+    
+
+
+
+
+
+
+
 
 
 class FollowSerializer(serializers.ModelSerializer):
+    follower_username = serializers.SerializerMethodField()
+    following_username = serializers.SerializerMethodField()
     class Meta:
         model = Follow
-        fields = ['id', 'follower', 'following', 'created_at']
+        fields = ['id','follower_username', 'following','following_username', 'created_at']
 
-
+    def get_follower_username(self, instance):
+        return instance.follower.username
+    
+    def get_following_username(self, instance):
+        return instance.following.username
 class PublicProfilesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('id', 'user', 'bio', 'profile_picture')
 
 
+
 class ProfileSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ['id', 'user', 'bio', 'profile_picture', 'is_public']  
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get('request')
+        if request and request.user and not request.user.is_staff:
+            try:
+                profile_instance = request.user.profile
+                self.fields['user'].queryset = CustomUser.objects.filter(pk=profile_instance.user.pk)
+            except Profile.DoesNotExist:
+                pass
+
+
+
+    
+
+    
