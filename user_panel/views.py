@@ -92,7 +92,6 @@ class FollowingProfilesViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Retrieve the users that the current user is following
         following_users = Follow.objects.filter(follower=self.request.user).values_list('following', flat=True)        # Retrieve profiles of the following users
         return Profile.objects.filter(user__in=following_users)
 
