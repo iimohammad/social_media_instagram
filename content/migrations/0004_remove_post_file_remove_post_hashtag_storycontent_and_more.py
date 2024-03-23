@@ -23,27 +23,36 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='StoryContent',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('typeContent', models.CharField(choices=[('image', 'Image'), ('video', 'Video')], max_length=10)),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('typeContent', models.CharField(choices=[
+                 ('image', 'Image'), ('video', 'Video')], max_length=10)),
                 ('file', models.FileField(upload_to='post_content/')),
-                ('story', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='story_content', to='content.story')),
+                ('story', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='story_content', to='content.story')),
             ],
         ),
         migrations.CreateModel(
             name='PostContent',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('typeContent', models.CharField(choices=[('image', 'Image'), ('video', 'Video')], max_length=10)),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('typeContent', models.CharField(choices=[
+                 ('image', 'Image'), ('video', 'Video')], max_length=10)),
                 ('file', models.FileField(upload_to='post_content/')),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='content', to='content.post')),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='content', to='content.post')),
             ],
         ),
         migrations.CreateModel(
             name='Hashtag',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tag', models.CharField(max_length=30, validators=[content.validators.validate_hashtag])),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='hashtags', to='content.post')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('tag', models.CharField(max_length=30, validators=[
+                 content.validators.validate_hashtag])),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='hashtags', to='content.post')),
             ],
             options={
                 'unique_together': {('post', 'tag')},

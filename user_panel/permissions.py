@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
@@ -9,7 +10,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the owner of the follower.
         return obj.following == request.user
-    
+
+
 class IsProfileOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # Allow GET, HEAD, and OPTIONS requests for all users

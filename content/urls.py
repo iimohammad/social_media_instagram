@@ -1,16 +1,23 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    MyPostViewSet,FollowingPostViewSet
+    FollowingStoryViewSet, MentionViewSet, MyPostViewSet, FollowingPostViewSet, MyStoryViewSet
 )
 
 
 router = DefaultRouter()
+# Show User Posts
 router.register(r'myposts', MyPostViewSet, basename='myposts')
-router.register(r'FollowingPosts', FollowingPostViewSet, basename='FollowingPosts')
-# router.register(r'mentions', MentionViewSet, basename='mentions')
-# router.register(r'following/posts', FollowingPostViewSet, basename='following-posts')
-# router.register(r'following/stories', FollowingStoryViewSet, basename='following-stories')
+# Show Following Posts and Can Like or Dislike
+router.register(r'Following/Posts', FollowingPostViewSet,
+                basename='FollowingPosts')
+# Show User Story
+router.register(r'Story/MyStory', MyStoryViewSet, basename='MyStory')
+# Show Following Stories
+router.register(r'Story/FollowingStory', FollowingStoryViewSet,
+                basename='FollowingStory')
+# CRUD Mention
+router.register(r'mentions', MentionViewSet, basename='mentions')
 
 urlpatterns = [
     path('', include(router.urls)),

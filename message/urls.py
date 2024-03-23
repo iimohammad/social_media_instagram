@@ -5,8 +5,10 @@ from .views import SendMessageAPIView, ReceiveMessageAPIView, TestMessageViewSet
 
 router = routers.DefaultRouter()
 router.register(r'test-messages', TestMessageViewSet, basename='test-messages')
-router.register(r'image-messages', ImageMessageViewSet, basename='image-messages')
-router.register(r'audio-messages', AudioMessageViewSet, basename='audio-messages')
+router.register(r'image-messages', ImageMessageViewSet,
+                basename='image-messages')
+router.register(r'audio-messages', AudioMessageViewSet,
+                basename='audio-messages')
 
 urlpatterns = [
     path('', include(router.urls)),

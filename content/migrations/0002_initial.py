@@ -18,27 +18,32 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='story',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='post',
             name='hashtag',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='content.hashtag'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to='content.hashtag'),
         ),
         migrations.AddField(
             model_name='post',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='mention',
             name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mentions', to='content.post'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, related_name='mentions', to='content.post'),
         ),
         migrations.AddField(
             model_name='mention',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterUniqueTogether(
             name='mention',

@@ -1,8 +1,10 @@
 import csv
 
+
 def generate_sample_csv(filename='sample_users.csv', num_records=10):
     # Define field names directly
-    field_names = ['username', 'password', 'first_name', 'last_name', 'email', 'phone_number']
+    field_names = ['username', 'password', 'first_name',
+                   'last_name', 'email', 'phone_number']
 
     # Open the CSV file in write mode
     with open(filename, 'w', newline='') as csvfile:
@@ -21,8 +23,10 @@ def generate_sample_csv(filename='sample_users.csv', num_records=10):
             phone_number = f'123456789{i}'
 
             # Write data row
-            csv_writer.writerow([username, password, first_name, last_name, email, phone_number])
+            csv_writer.writerow(
+                [username, password, first_name, last_name, email, phone_number])
 
     print(f'Sample CSV file "{filename}" generated successfully.')
+
 
 generate_sample_csv()

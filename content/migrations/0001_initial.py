@@ -15,23 +15,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Hashtag',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='Mention',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
             ],
         ),
         migrations.CreateModel(
             name='Post',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('caption', models.CharField(max_length=255)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('file', models.FileField(upload_to='content_files/', validators=[content.validators.validate_file_extension])),
+                ('file', models.FileField(upload_to='content_files/',
+                 validators=[content.validators.validate_file_extension])),
             ],
             options={
                 'verbose_name_plural': 'Posts',
@@ -40,9 +44,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Story',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('file', models.FileField(upload_to='content/', validators=[content.validators.validate_file_extension])),
+                ('file', models.FileField(upload_to='content/',
+                 validators=[content.validators.validate_file_extension])),
             ],
             options={
                 'verbose_name_plural': 'Stories',

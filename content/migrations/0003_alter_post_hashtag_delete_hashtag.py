@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='hashtag',
-            field=models.CharField(blank=True, max_length=30, validators=[content.validators.validate_hashtag]),
+            field=models.CharField(blank=True, max_length=30, validators=[
+                                   content.validators.validate_hashtag]),
         ),
         migrations.DeleteModel(
             name='Hashtag',

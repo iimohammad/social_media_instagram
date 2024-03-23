@@ -6,23 +6,26 @@ from rest_framework.viewsets import ModelViewSet
 from .models import TextMessage, ImageMessage, AudioMessage
 from .serializers import TestMessageSerializer, ImageMessageSerializer, AudioMessageSerializer
 
+
 class SendMessageAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = None
         message_type = request.data.get('type')
-        
+
         if message_type == 'test':
             serializer = TestMessageSerializer(data=request.data)
         elif message_type == 'image':
             serializer = ImageMessageSerializer(data=request.data)
         elif message_type == 'audio':
             serializer = AudioMessageSerializer(data=request.data)
-        
+
         if serializer is not None and serializer.is_valid():
             serializer.save(sender=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
 
 class ReceiveMessageAPIView(APIView):
     def get(self, request, *args, **kwargs):
@@ -40,13 +43,16 @@ class ReceiveMessageAPIView(APIView):
             'audio_messages': audio_serializer.data
         }, status=status.HTTP_200_OK)
 
+
 class TestMessageViewSet(ModelViewSet):
     queryset = TextMessage.objects.all()
     serializer_class = TestMessageSerializer
 
+
 class ImageMessageViewSet(ModelViewSet):
     queryset = ImageMessage.objects.all()
     serializer_class = ImageMessageSerializer
+
 
 class AudioMessageViewSet(ModelViewSet):
     queryset = AudioMessage.objects.all()

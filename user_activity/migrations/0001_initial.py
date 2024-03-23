@@ -16,7 +16,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.CharField(max_length=255)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
@@ -24,16 +25,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PostLike',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
             name='StoryLike',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('story_image', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='likes', to='content.story')),
+                ('story_image', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, related_name='likes', to='content.story')),
             ],
         ),
     ]

@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'logger',
     'user_activity',
     'user_panel',
-    
+
 
 ]
 

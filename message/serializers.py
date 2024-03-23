@@ -2,11 +2,11 @@ from rest_framework import serializers
 from user_panel.models import CustomUser
 from .models import TextMessage, ImageMessage, AudioMessage
 
+
 class sender_receiver_serializer(serializers.Serializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username']
-
 
 
 class TestMessageSerializer(serializers.ModelSerializer):
@@ -22,6 +22,7 @@ class TestMessageSerializer(serializers.ModelSerializer):
             fields['sender'].read_only = True
         return fields
 
+
 class ImageMessageSerializer(serializers.ModelSerializer):
     sender_info = sender_receiver_serializer(source='sender', read_only=True)
 
@@ -34,6 +35,7 @@ class ImageMessageSerializer(serializers.ModelSerializer):
         if 'sender' in fields:
             fields['sender'].read_only = True
         return fields
+
 
 class AudioMessageSerializer(serializers.ModelSerializer):
     sender_info = sender_receiver_serializer(source='sender', read_only=True)

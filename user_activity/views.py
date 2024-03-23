@@ -1,77 +1,81 @@
-from rest_framework import viewsets, status
 from rest_framework.response import Response
+
+from content.serializers import FollowingPostSerializer
 from .serializers import CommentSerializer
-from rest_framework.views import APIView
-from .models import Comment, PostLike, StoryLike
+from .models import Comment
 from content.models import *
+from rest_framework.decorators import action
+from rest_framework import viewsets, filters, permissions, status
+from user_panel.models import Follow
 
 
-class CommentViewSet(viewsets.ViewSet):
-    def create(self, request, *args, **kwargs):
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class LikeFollowingPostViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = FollowingPostSerializer
 
-class PostLikeViewSet(viewsets.ViewSet):
-    def create(self, request, post_id, *args, **kwargs):
-        try:
-            # Check if the post exists
-            post = Post.objects.get(pk=post_id)
-            # Check if the user has already liked the post
-            if PostLike.objects.filter(post=post, user=request.user).exists():
-                return Response({"error": "Post already liked by the user"}, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        following_users = Follow.objects.filter(follower=self.request.user).values_list('following', flat=True)
+        queryset = Post.objects.filter(user__in=following_users)
+        return queryset
+    
+    @action(detail=True, methods=['post'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        reaction, created = Reaction.objects.get_or_create(user=request.user, post=post)
+        if not created:
+            # Reaction already exists, check if it's a like or dislike
+            if reaction.status == Reaction.DISLIKE:
+                # Change dislike to like
+                reaction.status = Reaction.LIKE
+                reaction.save()
+                return Response({'detail': 'Post disliked successfully.'}, status=status.HTTP_200_OK)
             else:
-                # Create a new like for the post
-                like = PostLike.objects.create(post=post, user=request.user)
-                return Response(status=status.HTTP_200_OK)
-        except Post.DoesNotExist:
-            return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+                # Delete the existing like
+                reaction.delete()
+                return Response({'detail': 'Post like removed successfully.'}, status=status.HTTP_200_OK)
+        else:
+            # Create a new like
+            reaction.status = Reaction.LIKE
+            reaction.save()
+            return Response({'detail': 'Post liked successfully.'}, status=status.HTTP_201_CREATED)
 
-    def destroy(self, request, post_id, *args, **kwargs):
-        try:
-            # Check if the post exists
-            post = Post.objects.get(pk=post_id)
-            # Check if the user has already liked the post
-            like = PostLike.objects.filter(post=post, user=request.user).first()
-            if like:
-                # Delete the like
-                like.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
+    @action(detail=True, methods=['post'])
+    def dislike(self, request, pk=None):
+        post = self.get_object()
+        reaction, created = Reaction.objects.get_or_create(user=request.user, post=post)
+        if not created:
+            # Reaction already exists, check if it's a like or dislike
+            if reaction.status == Reaction.LIKE:
+                # Change like to dislike
+                reaction.status = Reaction.DISLIKE
+                reaction.save()
+                return Response({'detail': 'Post liked successfully.'}, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "User has not liked the post"}, status=status.HTTP_400_BAD_REQUEST)
-        except Post.DoesNotExist:
-            return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+                # Delete the existing dislike
+                reaction.delete()
+                return Response({'detail': 'Post dislike removed successfully.'}, status=status.HTTP_200_OK)
+        else:
+            # Create a new dislike
+            reaction.status = Reaction.DISLIKE
+            reaction.save()
+            return Response({'detail': 'Post disliked successfully.'}, status=status.HTTP_201_CREATED)
+        
 
+class FollowingCommentViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CommentSerializer
 
-class StoryLikeViewSet(viewsets.ViewSet):
-    def create(self, request, story_image_id, *args, **kwargs):
-        try:
-            # Check if the story image exists
-            story_image = Story.objects.get(pk=story_image_id)
-            # Check if the user has already liked the story image
-            if StoryLike.objects.filter(story_image=story_image, user=request.user).exists():
-                return Response({"error": "Story image already liked by the user"}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                # Create a new like for the story image
-                like = StoryLike.objects.create(story_image=story_image, user=request.user)
-                return Response(status=status.HTTP_200_OK)
-        except Story.DoesNotExist:
-            return Response({"error": "Story image not found"}, status=status.HTTP_404_NOT_FOUND)
+    def get_queryset(self):
+        following_users = Follow.objects.filter(follower=self.request.user).values_list('following', flat=True)
+        queryset = Comment.objects.filter(post__user__in=following_users)
+        return queryset
+    
 
-    def destroy(self, request, story_image_id, *args, **kwargs):
-        try:
-            # Check if the story image exists
-            story_image = Story.objects.get(pk=story_image_id)
-            # Check if the user has already liked the story image
-            like = StoryLike.objects.filter(story_image=story_image, user=request.user).first()
-            if like:
-                # Delete the like
-                like.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            else:
-                return Response({"error": "User has not liked the story image"}, status=status.HTTP_400_BAD_REQUEST)
-        except Story.DoesNotExist:
-            return Response({"error": "Story image not found"}, status=status.HTTP_404_NOT_FOUND)
+class MyCommentViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        queryset = Comment.objects.filter(post__user=self.request.user)
+        return queryset
