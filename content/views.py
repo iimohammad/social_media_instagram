@@ -130,11 +130,13 @@ class MentionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Mention.objects.filter(
             post__user=self.request.user).order_by('-pk')
-    
+
 
 class CreatePostAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = PostSerializer(data=request.data, context={'request': request})
+        serializer = PostSerializer(
+            data=request.data, context={
+                'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

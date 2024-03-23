@@ -1,8 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    CreatePostAPIView, FollowingStoryViewSet, MentionViewSet, MyPostViewSet, FollowingPostViewSet, MyStoryViewSet,
-
+    CreatePostAPIView,
+    FollowingStoryViewSet,
+    MentionViewSet,
+    MyPostViewSet,
+    FollowingPostViewSet,
+    MyStoryViewSet,
 )
 
 

@@ -47,12 +47,12 @@ INSTALLED_APPS = [
     'import_export',
 
     # apps
-    'home',
-    'content',
-    'message',
-    'logger',
-    'user_activity',
-    'user_panel',
+    'home.apps.HomeConfig',
+    'content.apps.ContentConfig',
+    'message.apps.MessageConfig',
+    'logger.apps.LoggerConfig',
+    'user_activity.apps.UserActivityConfig',
+    'user_panel.apps.UserPanelConfig',
 
 
 ]

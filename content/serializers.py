@@ -23,7 +23,8 @@ class PostContentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.none())
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.none())
     hashtags = HashtagSerializer(many=True)
     content = PostContentSerializer(many=True)
 
@@ -48,7 +49,8 @@ class PostSerializer(serializers.ModelSerializer):
         # Retrieve the current user from the context
         user = self.context['request'].user
         return CustomUser.objects.filter(id=user.id)
-    
+
+
 class FollowingPostSerializer(serializers.ModelSerializer):
     hashtags = HashtagSerializer(many=True, read_only=True)
     content = PostContentSerializer(many=True)
@@ -77,7 +79,8 @@ class FollowingPostSerializer(serializers.ModelSerializer):
 
 
 class StorySerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.none())
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.none())
 
     class Meta:
         model = Story
